@@ -16,6 +16,8 @@ crossScalaVersions := Seq(
 
 resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
+resolvers += "scalender" at "https://kiris.github.io/scalendar/repo/"
+
 scalacOptions <++= scalaVersion map {
   case sv if sv startsWith "2.1" =>
     Seq("-feature", "-language:implicitConversions", "-language:postfixOps")
@@ -36,13 +38,7 @@ libraryDependencies <++= scalaVersion {
   )
 }
 
-publishTo <<= version { v =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases" at nexus + "service/local/staging/deploy/maven2")
-}
+publishTo := Some(Resolver.file("file", file("repo")))
 
 publishMavenStyle := true
 
